@@ -19,7 +19,7 @@ def preview():
     return result
 
 
-@app.get('/icd/value')
+@app.get('/icd/<value>')
 def icdcode(value):
     print('value: ', value)
     filtered = df[df['principal_diagnosis_code'] == value]
