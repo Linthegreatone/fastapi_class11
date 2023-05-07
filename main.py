@@ -5,7 +5,6 @@ df = pd.read_csv('./data/diagnoses2019.csv',
                  sep='\t', 
                  names=['code'],
                  header=None)
-df.to_csv('diagnoses2019.csv', index=False)
 
 app = FastAPI()
 
