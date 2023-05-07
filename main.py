@@ -17,7 +17,7 @@ async def preview():
     return result
 
 @app.get('/icd/<value>')
-async def icdcode(value):
+def icdcode(value):
     print('value: ', value)
     filtered = df[df['principal_diagnosis_code'] == value]
     if len(filtered) <= 0:
@@ -26,7 +26,7 @@ async def icdcode(value):
         return filtered.to_json(orient="records")
 
 @app.get('/icd/<value>/sex/<value2>')
-async def icdcode2(value, value2):
+def icdcode2(value, value2):
     filtered = df[df['principal_diagnosis_code'] == value]
     filtered2 = filtered[filtered['sex'] == value2]
     if len(filtered2) <= 0:
