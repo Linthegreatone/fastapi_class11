@@ -1,22 +1,21 @@
-from time import time
-import pandas as pd
-from fastapi import FastAPI, __version__
+from flask import Flask, request 
+import pandas as pd 
 
 df = pd.read_csv('./data/diagnoses2019.csv')
 
-app = FastAPI() # This is what will be refrenced in config
+app = Flask(__name__)
 
-@app.get('/')
-async def hello():
-    return {'res': 'pong', 'version': __version__, "time": time()}
+@app.route('/', methods=["GET"])
+def home():
+    return 'this is a API service for MN ICD code details'
 
-@app.get('/preview')
-async def preview():
+@app.route('/preview', methods=["GET"])
+def preview():
     top10rows = df.head(1)
     result = top10rows.to_json(orient="records")
     return result
 
-@app.get('/icd/<value>')
+@app.route('/icd/<value>', methods=['GET'])
 def icdcode(value):
     print('value: ', value)
     filtered = df[df['principal_diagnosis_code'] == value]
@@ -25,13 +24,15 @@ def icdcode(value):
     else: 
         return filtered.to_json(orient="records")
 
-@app.get('/icd/<value>/sex/<value2>')
+@app.route('/icd/<value>/sex/<value2>')
 def icdcode2(value, value2):
     filtered = df[df['principal_diagnosis_code'] == value]
     filtered2 = filtered[filtered['sex'] == value2]
     if len(filtered2) <= 0:
         return 'There is nothing here'
     else: 
-        return filtered2.to_json(orient="records")
+        return filtered2.to_json(orient="records")    
+    
 
-
+if __name__ == '__main__':
+    app.run(debug=True)
