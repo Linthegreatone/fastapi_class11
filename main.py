@@ -1,9 +1,9 @@
-from flask import Flask, request 
+from fastapi import FastAPI
 import pandas as pd 
 
 df = pd.read_csv('./data/diagnoses2019.csv')
 
-app = Flask(__name__)
+app = FastAPI()
 
 @app.route('/', methods=["GET"])
 def home():
@@ -34,5 +34,3 @@ def icdcode2(value, value2):
         return filtered2.to_json(orient="records")    
     
 
-if __name__ == '__main__':
-    app.run(debug=True)
